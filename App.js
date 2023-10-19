@@ -1,9 +1,11 @@
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View } from "react-native";
 import RegistrationScreen from "./src/screens/RegistrationScreen";
-import {createStore} from "react-redux";
-import { Provider } from "react-redux";
+import { createStore } from "react-redux";
+import { Provider } from "react-redux"; 
+import userReducer from "./src/store/reducers/userReducer";
 import store from "./src/store/store";
+
 
 
 export default function App() {

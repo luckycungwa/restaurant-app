@@ -1,6 +1,7 @@
 
 const initialState = {
-    user: null,
+    // user: null,   
+    users: [],  // store users in array
   };
   
   const userReducer = (state = initialState, action) => {
@@ -8,7 +9,7 @@ const initialState = {
       case 'REGISTER_USER':
         return {
           ...state,
-          user: action.payload,
+          user: [... state.users, action.payload],
         };
       default:
         return state;

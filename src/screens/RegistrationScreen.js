@@ -1,22 +1,54 @@
 import React from "react";
-import { StyleSheet, Text, View, TextInput, Button, Pressable } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  TextInput,
+  Button,
+  Pressable,
+  Alert,
+} from "react-native";
 
 import { useForm, Controller } from "react-hook-form"; //the official form velidation library (alt: formik || yup)
-import { useDispatch } from "react-redux";              //import useDispatch
-import {registerUser} from "../store/actions";          //import that registerUser from actions
-
+import { useDispatch, useSelector } from "react-redux"; //import useDispatch (useSeletcor to retrieve user info)
+import { registerUser } from "../store/actions"; //import that registerUser from actions
 
 export default function RegistrationScreen() {
   const { control, handleSubmit, formState } = useForm();
-  
-  const dispatch = useDispatch();           //get dispatch function
+
+  const dispatch = useDispatch(); //get dispatch function
+  const users = useSelector((state) => state.users.user); // Access users array from  Redux store
 
   const onSubmit = (data) => {
     // Register User (store their data) || check if user already exist
-    dispatch(registerUser(data));
-    console.log("Registration successful:", data);
+    // dispatch(registerUser(data));
+    // console.log("Registration successful:", data);
 
     // console.log(data);      //log form data after submission
+
+    // --------------------------------------------------------------------------------------------- //
+    
+    handleRegister(data);
+  };
+  
+  const handleRegister = (data) => {
+    // Check if email or cell number already exist [idk if there's another method to prevent multi accounts]
+    const isEmailUsed = users.some((user) => user.email === data.email);
+    const isCellUsed = users.some((user) => user.cellNumber === data.cellNumber);
+  
+    console.log("isEmailUsed:", isEmailUsed);
+    console.log("isCellUsed:", isCellUsed);
+  
+    if (isEmailUsed || isCellUsed) {
+      // Alert user if credentials already exist
+      console.log("Data Already Exists");
+      Alert.alert("Credentials already in use. Try to login.");
+    } else {
+      // Dispatch the action to register the user
+      dispatch(registerUser(data));
+      console.log("Registration successful: ", data);
+    }
+    console.log("Data received:", data);
   };
 
   return (
@@ -35,7 +67,9 @@ export default function RegistrationScreen() {
                 onChangeText={field.onChange}
                 value={field.value}
               />
-              {fieldState.invalid && <Text style={styles.warningTxt}>Name is required.</Text>}
+              {fieldState.invalid && (
+                <Text style={styles.warningTxt}>Name is required.</Text>
+              )}
             </>
           )}
           name="name"
@@ -54,7 +88,9 @@ export default function RegistrationScreen() {
                 onChangeText={field.onChange}
                 value={field.value}
               />
-              {fieldState.invalid && <Text style={styles.warningTxt}>Surname is required.</Text>}
+              {fieldState.invalid && (
+                <Text style={styles.warningTxt}>Surname is required.</Text>
+              )}
             </>
           )}
           name="surname"
@@ -73,7 +109,9 @@ export default function RegistrationScreen() {
                 onChangeText={field.onChange}
                 value={field.value}
               />
-              {fieldState.invalid && <Text style={styles.warningTxt}>Email is required.</Text>}
+              {fieldState.invalid && (
+                <Text style={styles.warningTxt}>Email is required.</Text>
+              )}
             </>
           )}
           name="email"
@@ -93,7 +131,9 @@ export default function RegistrationScreen() {
                 onChangeText={field.onChange}
                 value={field.value}
               />
-              {fieldState.invalid && <Text style={styles.warningTxt}>Password is required.</Text>}
+              {fieldState.invalid && (
+                <Text style={styles.warningTxt}>Password is required.</Text>
+              )}
             </>
           )}
           name="password"
@@ -113,14 +153,20 @@ export default function RegistrationScreen() {
                 value={field.value}
               />
 
-              {fieldState.invalid && <Text style={styles.warningTxt}>Cell Number is required.</Text>}
+              {fieldState.invalid && (
+                <Text style={styles.warningTxt}>Cell Number is required.</Text>
+              )}
             </>
           )}
           name="cellNumber"
           rules={{ required: true }}
         />
 
-        <Button style={styles.Button} title="Register" onPress={handleSubmit(onSubmit)} />
+        <Button
+          style={styles.Button}
+          title="Register"
+          onPress={handleSubmit(onSubmit)}
+        />
         <Text>click here to login</Text>
       </View>
     </View>
@@ -164,7 +210,6 @@ const styles = StyleSheet.create({
     letterSpacing: 1,
     color: "#000000",
     marginVertical: 12,
-    
   },
 
   Button: {
