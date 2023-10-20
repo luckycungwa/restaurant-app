@@ -5,6 +5,8 @@ import { createStore } from "react-redux";
 import { Provider } from "react-redux"; 
 import userReducer from "./src/store/reducers/userReducer";
 import store from "./src/store/store";
+import LoginScreen from "./src/screens/LoginScreen";
+import Navigation from "./src/components/Navigation";
 
 
 
@@ -13,7 +15,9 @@ export default function App() {
     <Provider store={store}>
       <View style={styles.container}>
         <StatusBar style="auto" />
-        <RegistrationScreen />
+        <Navigation/>
+        {/* <RegistrationScreen /> */}
+        <LoginScreen/>
       </View>
     </Provider>
   );
