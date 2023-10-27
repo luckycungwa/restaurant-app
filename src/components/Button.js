@@ -20,6 +20,7 @@ const styles = StyleSheet.create({
     // borderStyle: solid,
     borderWidth: 1.5,
     borderColor: "rgba(255, 194, 37, 1.0)",
+    borderRadius: "50%",
   },
   ButtonTxt: {
     width: 150,

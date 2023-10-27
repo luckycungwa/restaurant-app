@@ -4,9 +4,12 @@ import RegistrationScreen from "./src/screens/RegistrationScreen";
 import { createStore } from "react-redux";
 import { Provider } from "react-redux"; 
 import userReducer from "./src/store/reducers/userReducer";
-import store from "./src/store/store";
+import store from "./src/store/store";        // get store
 import LoginScreen from "./src/screens/LoginScreen";
 import Navigation from "./src/components/Navigation";
+import BrowseScreen from "./src/screens/BrowseScreen";
+import LoadingScreen from "./src/screens/LoadingScreen";
+import MenuScreen from "./src/screens/MenuScreen";
 
 
 
@@ -15,9 +18,12 @@ export default function App() {
     <Provider store={store}>
       <View style={styles.container}>
         <StatusBar style="auto" />
-        <Navigation/>
-        {/* <RegistrationScreen /> */}
-        <LoginScreen/>
+        {/* <Navigation/> */}
+        {/* <RegistrationScreen /> */}      
+        {/* <LoginScreen/> */}
+        <BrowseScreen/>
+        {/* <LoadingScreen/> */}
+        {/* <MenuScreen/> */}
       </View>
     </Provider>
   );
@@ -29,5 +35,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
+    
+    paddingTop: 48,
+    paddingHorizontal: 8,
   },
 });
