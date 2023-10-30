@@ -1,18 +1,38 @@
 // was renamed from MainCard
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { View, Image, Text, StyleSheet } from "react-native";
-import LikeButton from './LikeButton';
+import LikeButton from "./LikeButton";
+import { getDatabase, ref, onValue } from "firebase/database";
 
-export default function RestaurantCard({ image, name, foodType, location, closingTime, rating }) {
+export default function RestaurantCard({ id }) {
+  const [restaurantData, setRestaurantData] = useState(null);
+
+  
+  useEffect(() => {
+    const db = getDatabase(firebase);
+    const restaurantRef = ref(db, "Restaurants/" + id);
+
+    onValue(restaurantRef, (snapshot) => {
+      const data = snapshot.val();
+      setRestaurantData(data);
+    });
+  }, [id]);
+
+  if (!restaurantData) {
+    console.log("Failed to fetch data");
+    return null;
+  }
+
   return (
     <View style={styles.container}>
-      <Image source={{ uri: image }} style={styles.image} />
+      <Image source={{ uri: restaurantData.image }} style={styles.image} />
       <View style={styles.content}>
-        <Text style={styles.name}>{name}</Text>
-        <Text style={styles.foodType}>{foodType}</Text>
-        <Text style={styles.location}>{location}</Text>
-        <Text style={styles.closingTime}>{closingTime}</Text>
-        <Text style={styles.rating}>{rating}</Text>
+        <Text style={styles.name}>{restaurantData.name}</Text>
+        <Text style={styles.foodType}>{restaurantData.category}</Text>
+        <Text style={styles.location}>{restaurantData.location}</Text>
+        {/* <Text style={styles.closingTime}>{restaurantData.description}</Text> */}
+        {/* <Text style={styles.closingTime}>{restaurantData.closingTime}</Text> */}
+        <Text style={styles.rating}>{restaurantData.rating}</Text>
       </View>
       <View style={styles.likeBtnContainer}>
         <LikeButton />
